@@ -14,12 +14,12 @@ newBoard.placeShip(coordinates2);
 test("simulate placing ship with 2 length", () => {
   expect(newBoard.receiveAttack("a0")).toBe(true);
   expect(newBoard.receiveAttack("c0")).toBe(false);
-  expect(newBoard.checkWinCondition()).toBe(false);
+  expect(newBoard.isEnemyWinner()).toBe(false);
 
   expect(newBoard.receiveAttack("b0")).toBe(true);
-  expect(newBoard.checkWinCondition()).toBe(false);
+  expect(newBoard.isEnemyWinner()).toBe(false);
   expect(newBoard.receiveAttack("c1")).toBe(true);
-  expect(newBoard.checkWinCondition()).toBe(true);
+  expect(newBoard.isEnemyWinner()).toBe(true);
 });
 
 test("missed attack tracker", () => {

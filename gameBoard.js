@@ -24,7 +24,7 @@ const gameBoardFactory = () => {
     return false;
   }
 
-  function checkWinCondition() {
+  function isEnemyWinner() {
     return allShips.reduce((prev, cur) => prev && cur.isSunk(), true);
   }
 
@@ -34,7 +34,7 @@ const gameBoardFactory = () => {
     } else return null;
   }
 
-  return { placeShip, receiveAttack, checkWinCondition, draw };
+  return { placeShip, receiveAttack, isEnemyWinner, draw };
 };
 
 export { gameBoardFactory };
