@@ -19,5 +19,9 @@
   "homepage": "https://github.com/madosy/battleship#readme",
   "dependencies": {
     "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   }
 }
