@@ -1,4 +1,4 @@
-import { gameBoardFactory } from "./gameBoard";
+import { gameBoardFactory } from "./gameBoard.js";
 
 let newBoard = gameBoardFactory();
 // Coordinate system

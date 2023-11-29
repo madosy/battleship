@@ -1,4 +1,4 @@
-import { gameBoardFactory } from "./gameBoard";
+import { gameBoardFactory } from "./gameBoard.js";
 
 const playerFactory = () => {
   const gameBoard = gameBoardFactory();
