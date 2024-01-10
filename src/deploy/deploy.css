@@ -1,0 +1,22 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.grid {
+    width: min-content;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    column-gap: 0;
+    row-gap: 0;
+}
+
+.square{
+    position: relative;
+background-image: url(grid-bg.svg);
+background-size: cover;
+    height: 40px;
+    width: 40px;
+    display: grid;
+}
