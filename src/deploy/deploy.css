@@ -3,8 +3,11 @@
     padding: 0px;
 }
 
+.grid-container{
+    position: relative;
+    width: 400px;
+}
 .grid {
-    width: min-content;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
@@ -12,11 +15,31 @@
     row-gap: 0;
 }
 
+.deployment{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
 .square{
     position: relative;
-background-image: url(grid-bg.svg);
-background-size: cover;
+    background-image: url(grid-bg.svg);
+    background-size: cover;
     height: 40px;
     width: 40px;
     display: grid;
+    z-index: 0;
+}
+
+.ship{
+    height: 40px;
+    width: 80px;
+    grid-column: 5 / span 2;
+    grid-row: 9;
+    z-index: 1;
+
+    background-image: url(ship2.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
