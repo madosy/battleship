@@ -1,23 +1,49 @@
-let squares = document.querySelectorAll(".square");
+let topGrid = document.querySelector(".top.grid");
+let lowerGrid = document.querySelector(".lower.grid");
+
+//generate grid
+for (let row = 1; row < 11; row++) {
+  for (let col = 1; col < 11; col++) {
+    let square = document.createElement("div");
+    square.classList.add("square");
+    square.setAttribute("data-col", col);
+    square.setAttribute("data-row", row);
+    topGrid.appendChild(square);
+    lowerGrid.appendChild(square.cloneNode());
+  }
+}
+
+let squares = document.querySelectorAll(".top .square");
 let gridContainer = document.querySelector(".grid-container");
+let hoverShip = document.querySelector(".ship:not(.deployed)");
+let shipOrientation = "horizontal";
 
 squares.forEach((square) =>
   square.addEventListener("click", () => {
-    let gridID = square.getAttribute("data-grid");
-    console.log(gridID);
+    if (hoverShip.classList.contains("invalid")) return;
+    hoverShip.classList.add("deployed");
+    hoverShip = document.querySelector(".ship:not(.deployed)");
   })
 );
-
-let hoverShip = document.querySelector(".ship3");
-
 squares.forEach((square) =>
   square.addEventListener("mouseover", () => {
-    let gridID = square.getAttribute("data-grid");
-    console.log(gridID);
-    hoverShip.style.gridColumn = `${gridID.charAt(1)} / span 2`;
-    hoverShip.style.gridRow = `${gridID.charAt(0)}`;
+    let column = square.getAttribute("data-col");
+    let row = square.getAttribute("data-row");
+    let limit = 10 - hoverShip.getAttribute("data-size") + 1;
+    console.log(limit);
+
+    if (shipOrientation == "horizontal" && column > limit) {
+      hoverShip.classList.add("invalid");
+    } else {
+      hoverShip.classList.remove("invalid");
+    }
+
+    hoverShip.style.gridColumn = `${column} / span 2`;
+    hoverShip.style.gridRow = `${row}`;
   })
 );
+
+//probably just better to add data property for column and row values.
 
 /* 
 Get info on current square and give to display controller
