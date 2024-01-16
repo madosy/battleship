@@ -1,11 +1,32 @@
 *{
+    --square-width: 80px;
+    --container-width: calc(80px * 10);
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
+
+body{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    place-content: center;
+    align-items: center;
+}
+
+.bg-image{
+        position: absolute;
+        background: url(bg.jpeg) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        height: 100vh;
+        width: 100vw;
+}
+
 
 .grid-container{
     position: relative;
-    width: 400px;
+    width: var(--container-width);
+    height: var(--container-width);
 }
 .grid {
     display: grid;
@@ -17,31 +38,51 @@
 
 .deployment{
     position: absolute;
+    width: 100%;
+    height: 100%;
     top:0;
     left:0;
+}
+.grid.top{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    opacity: 0;
 }
 
 .square{
     position: relative;
-    background-image: url(grid-bg.svg);
+    background-image: url(grid.png);
     background-size: cover;
-    height: 40px;
-    width: 40px;
+    height: var(--square-width);
+    width: var(--square-width);
     display: grid;
     z-index: 0;
+    opacity: 80%;
 }
 
 .ship{
-    height: 40px;
-    width: 80px;
-    grid-column: 5 / span 2;
-    grid-row: 9;
-    z-index: 1;
+    min-height: 40px;
+    overflow: hidden;
+    grid-column: 4 / span 2;
+    grid-row: 8;
+    position: relative;
+}
+.ship::before{
+    content:"";
+    width: 100%;
+    height: 100%;
+    position: absolute;
     background-image: url(ship2.svg);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    transform: rotate(0) scale(1);
 }
+
+/*vertical ship deployment require before element*/
 
 .ship2{
     min-height: 40px;
@@ -60,4 +101,68 @@
     background-position: center;
     background-repeat: no-repeat;
     transform: rotate(90deg) scale(2);
+}
+
+.battleship{
+    min-height: 40px;
+    overflow: hidden;
+    grid-column: 8;
+    grid-row: 3 / span 5;
+    position: relative;
+}
+.battleship::before{
+    content:"";
+    width: 100%; 
+    height: 100%;
+    position: absolute;
+    background-image: url(ship5.svg);
+    background-size: contain; /*if rotated vertical seems like it need be contain*/
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(90deg) scale(5); /*scale is just whatever squares it's supposed to occupy*/
+}
+
+.battleship2{
+    min-height: 40px;
+    overflow: hidden;
+    grid-column: 2 / span 5;
+    grid-row: 1;
+    position: relative;
+}
+.battleship2::before{
+    content:"";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(ship5-2.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(0) scale(1);
+}
+
+.grid-container .ship3{
+    visibility: hidden;
+}
+
+.grid-container:hover .ship3{
+    min-height: 40px;
+    overflow: hidden;
+    grid-column: 6 / span 2;
+    grid-row: 8;
+    position: relative;
+    visibility: visible;
+    background-color: red;
+    opacity: 50%;
+}
+.ship3::before{
+    content:"";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(ship2.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(0) scale(1);
 }

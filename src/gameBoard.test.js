@@ -24,7 +24,7 @@ test("simulate placing ship with 2 length", () => {
 
 test("missed attack tracker", () => {
   expect(newBoard.receiveAttack("d5")).toBe(false);
-  expect(newBoard.draw("d5")).toBe("miss");
-  expect(newBoard.draw("c1")).toBe("hit");
-  expect(newBoard.draw("d6")).toBe(null);
+  expect(newBoard.isHit("d5")).toBe(false);
+  expect(newBoard.isHit("c1")).toBe(true);
+  expect(newBoard.isHit("d6")).toBe(null);
 });

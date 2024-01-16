@@ -28,13 +28,13 @@ const gameBoardFactory = () => {
     return allShips.reduce((prev, cur) => prev && cur.isSunk(), true);
   }
 
-  function draw(coordinate) {
+  function isHit(coordinate) {
     if (attackHistory.has(coordinate)) {
-      return shipPlacement.has(coordinate) ? "hit" : "miss";
+      return shipPlacement.has(coordinate) ? true : false;
     } else return null;
   }
 
-  return { placeShip, receiveAttack, isEnemyWinner, draw };
+  return { placeShip, receiveAttack, isEnemyWinner, isHit };
 };
 
 export { gameBoardFactory };

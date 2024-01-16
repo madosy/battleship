@@ -9,3 +9,5 @@ This project was created as part of [The Odin Project](https://www.theodinprojec
 ## Goal
 
 TDD
+
+user submits a name
