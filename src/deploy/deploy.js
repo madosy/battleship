@@ -29,6 +29,8 @@ squares.forEach((square) =>
   square.addEventListener("mouseover", () => {
     let column = square.getAttribute("data-col");
     let row = square.getAttribute("data-row");
+    let shipSize = hoverShip.getAttribute("data-size");
+    console.log(shipSize);
     let limit = 10 - hoverShip.getAttribute("data-size") + 1;
     console.log(limit);
 
@@ -38,7 +40,7 @@ squares.forEach((square) =>
       hoverShip.classList.remove("invalid");
     }
 
-    hoverShip.style.gridColumn = `${column} / span 2`;
+    hoverShip.style.gridColumn = `${column} / span ${shipSize}`;
     hoverShip.style.gridRow = `${row}`;
   })
 );
