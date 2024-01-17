@@ -16,17 +16,24 @@ for (let row = 1; row < 11; row++) {
 let squares = document.querySelectorAll(".top .square");
 let gridContainer = document.querySelector(".grid-container");
 let hoverShip = document.querySelector(".ship:not(.deployed)");
+hoverShip.classList.add("active");
 let shipOrientation = "horizontal";
 
 squares.forEach((square) =>
   square.addEventListener("click", () => {
-    if (hoverShip.classList.contains("invalid")) return;
+    if (
+      hoverShip.classList.contains("invalid") ||
+      !hoverShip.classList.contains("active")
+    )
+      return;
     hoverShip.classList.add("deployed");
     hoverShip = document.querySelector(".ship:not(.deployed)");
   })
 );
+
 squares.forEach((square) =>
   square.addEventListener("mouseover", () => {
+    hoverShip.classList.add("active");
     let column = square.getAttribute("data-col");
     let row = square.getAttribute("data-row");
     let shipSize = hoverShip.getAttribute("data-size");

@@ -1,18 +1,22 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Saira&display=swap');
+
 * {
   --square-width: 80px;
   --container-width: calc(80px * 10);
   margin: 0px;
   padding: 0px;
-  box-sizing: border-box;
+  box-sizing: content-box;
 }
 
-body {
+/* body {
   display: flex;
   height: 100vh;
   width: 100vw;
   place-content: center;
   align-items: center;
-}
+} */
+
 
 .bg-image {
   position: absolute;
@@ -26,7 +30,47 @@ body {
   position: relative;
   width: var(--container-width);
   height: var(--container-width);
+  /* border: 10px solid hsla(212, 50%, 25%, 1) ; */
+  /* border-radius: 15px; */
 }
+
+.content {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: min-content 1fr;
+    width: min-content;
+    margin: auto;
+}
+.label{
+    color: white;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+font-family: 'Saira', sans-serif;
+user-select: none;
+text-shadow: white 1px 0 10px;
+
+}
+
+.top.label{
+   grid-column: 2;
+   position: relative;
+   display: grid;
+   width: var(--container-width);
+   grid-template-columns: repeat(10,1fr);
+   justify-items: center;
+   padding: 0;
+}
+.left.label{
+    position: relative;
+    display: grid;
+    height: var(--container-width);
+    grid-template-rows: repeat(10,1fr);
+    align-items: center;
+    padding: 0 5px;
+}
+
+
 .grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -53,13 +97,13 @@ body {
 
 .square {
   position: relative;
-  background-image: url(grid.png);
+  background-image: url(dark-square.png);
   background-size: cover;
   height: var(--square-width);
   width: var(--square-width);
   display: grid;
   z-index: 0;
-  opacity: 80%;
+  opacity: 90%;
 }
 
 /* .ship{
@@ -101,7 +145,7 @@ body {
   background-repeat: no-repeat;
   transform: rotate(90deg) scale(2);
 }
-
+/* 
 .battleship {
   min-height: 40px;
   overflow: hidden;
@@ -109,38 +153,17 @@ body {
   grid-row: 3 / span 5;
   position: relative;
 }
-
-
-
-
-.battleship2 {
-  min-height: 40px;
-  overflow: hidden;
-  grid-column: 2 / span 5;
-  grid-row: 1;
-  position: relative;
-}
-.battleship2::before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-image: url(ship5-2.svg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transform: rotate(0) scale(1);
-}
+ */
 
 .grid-container .ship {
   visibility: hidden;
 }
 
-.grid-container:hover .ship:not(.deployed) {
+.grid-container:hover .ship.active:not(.deployed) {
   min-height: 40px;
   overflow: hidden;
-  grid-column: 6 / span 2;
-  grid-row: 8;
+  /* grid-column: 6 / span 2;
+  grid-row: 8; */
   position: relative;
   visibility: visible;
   background-color: palegreen;
@@ -150,6 +173,7 @@ body {
 .grid-container .ship.deployed {
   visibility: visible;
   opacity: 100%;
+  background-color: hsla(212, 50%, 10%, .3)
 }
 
 .patrol.ship {
@@ -157,14 +181,14 @@ body {
   overflow: hidden;
   grid-column: span 2;
   position: relative;
-  opacity: 50%;
+  /* opacity: 50%; */
 }
 .patrol.ship:not(.invalid)::before {
   content: "";
   width: 100%;
   height: 100%;
   position: absolute;
-  background-image: url(ship2.svg);
+  background-image: url(patrolship.svg);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -184,7 +208,26 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
-    background-image: url(ship5.svg);
+    background-image: url(battleship.svg);
+    background-size: contain; /*if rotated vertical seems like it need be contain*/
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(0deg) scale(1); /*scale is just whatever squares it's supposed to occupy*/
+  }
+
+  .submarine.ship{
+    min-height: 40px;
+    overflow: hidden;
+    position: relative;
+    grid-column: span 3;
+  }
+
+  .submarine.ship:not(.invalid)::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(submarine.svg);
     background-size: contain; /*if rotated vertical seems like it need be contain*/
     background-position: center;
     background-repeat: no-repeat;
@@ -192,7 +235,7 @@ body {
   }
   
 
-.grid-container:hover .ship.invalid {
+.grid-container:hover .ship.active.invalid {
   background-color: red;
   background-image: none;
   cursor: not-allowed;
