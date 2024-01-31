@@ -126,9 +126,6 @@ function loadPlayerScreen() {
         attackMarker.classList.add("hit");
       } else attackMarker.classList.add("nohit");
 
-      console.log(squareToEval);
-      console.log(enemyBoard.attackHistory);
-
       attackMarkerGrid.appendChild(newMarker);
       attackMarker = newMarker;
     })

@@ -38,6 +38,8 @@ const gameBoardFactory = () => {
 
   return {
     attackHistory,
+    shipPlacement,
+    allShips,
     placeShip,
     receiveAttack,
     isEnemyWinner,
