@@ -9,7 +9,7 @@ const gameController = (() => {
 
   const playerBoard = gameBoardFactory();
   const computerBoard = gameBoardFactory();
-  computerBoard.placeShip(["a1", "a2", "a3", "a4", "a5"]);
+  playerBoard.placeShip(["a1", "a2", "a3", "a4", "a5"]);
   computerBoard.placeShip(["d3", "e3", "f3", "g3"]);
   computerBoard.placeShip(["e6", "e7", "e8"]);
   computerBoard.placeShip(["j5", "j6", "j7"]);

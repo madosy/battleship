@@ -1,6 +1,8 @@
 import clearContentDiv from "./clearContentDiv";
 import gameController from "../gameController";
 import "../style/attack.css";
+import getSquaresOccupied from "./getSquaresOccupied";
+import checkSquareAvailable from "./checkSquareAvailable";
 
 function loadPlayerScreen() {
   clearContentDiv();
@@ -68,7 +70,6 @@ function loadPlayerScreen() {
 
   let attackMarker = document.createElement("div");
   attackMarker.classList.add("marker");
-  attackMarker.classList.add("active");
   attackMarkerGrid.appendChild(attackMarker);
 
   let squares = document.querySelectorAll(".top .square");
@@ -76,8 +77,20 @@ function loadPlayerScreen() {
   squares.forEach((square) =>
     square.addEventListener("mouseover", () => {
       if (attackMarker == null) return;
+      attackMarker.classList.remove("invalid");
+      attackMarker.classList.add("active");
       let column = square.getAttribute("data-col");
       let row = square.getAttribute("data-row");
+
+      //this needs to check if squares have already been attacked
+      let squareToEval = getSquaresOccupied(
+        "horizontal",
+        square.getAttribute("data-col"),
+        square.getAttribute("data-row"),
+        1
+      );
+      if (!checkSquareAvailable(squareToEval))
+        attackMarker.classList.add("invalid");
 
       attackMarker.style.gridColumn = `${column}`;
       attackMarker.style.gridRow = `${row}`;
@@ -92,8 +105,21 @@ function loadPlayerScreen() {
         !attackMarker.classList.contains("active")
       )
         return;
-      let newMarker = attackMarker.cloneNode(false);
       attackMarker.classList.remove("active");
+      let newMarker = attackMarker.cloneNode(false);
+
+      let squareToEval = getSquaresOccupied(
+        "horizontal",
+        square.getAttribute("data-col"),
+        square.getAttribute("data-row"),
+        1
+      );
+
+      let isHit = !checkSquareAvailable(squareToEval);
+      if (isHit) {
+        attackMarker.classList.add("hit");
+      } else attackMarker.classList.add("nohit");
+
       attackMarkerGrid.appendChild(newMarker);
       attackMarker = newMarker;
     })
