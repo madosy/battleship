@@ -1,6 +1,4 @@
 * {
-    --square-width: 80px;
-    --container-width: calc(80px * 10);
     margin: 0px;
     padding: 0px;
     box-sizing: content-box;

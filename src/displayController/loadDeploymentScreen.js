@@ -1,4 +1,5 @@
 import clearContentDiv from "./clearContentDiv";
+import gameController from "../gameController";
 import "../style/deploy.css";
 
 function loadDeploymentScreen() {
@@ -65,29 +66,74 @@ function loadDeploymentScreen() {
   squares.forEach((square) =>
     square.addEventListener("click", () => {
       if (
+        hoverShip == null ||
         hoverShip.classList.contains("invalid") ||
         !hoverShip.classList.contains("active")
       )
         return;
+      let result = getSquaresOccupied(
+        shipOrientation,
+        square.getAttribute("data-col"),
+        square.getAttribute("data-row"),
+        hoverShip.getAttribute("data-size")
+      );
+      gameController.placeShip(result);
       hoverShip.classList.add("deployed");
       hoverShip = document.querySelector(".ship:not(.deployed)");
     })
   );
 
+  function getSquaresOccupied(shipOrientation, column, row, shipSize) {
+    let alphabet = "abcdefghij".split("");
+    let squaresOccupied = [];
+    if (shipOrientation == "horizontal") {
+      for (let index = 0; index < shipSize; index++) {
+        squaresOccupied.push(
+          `${alphabet[Number.parseInt(row) - 1]}${
+            Number.parseInt(column) + index
+          }`
+        );
+      }
+    }
+    return squaresOccupied;
+  }
+
+  function checkSquareAvailable(coordinates) {
+    for (let index = 0; index < coordinates.length; index++) {
+      let currentCoordinate = coordinates[index];
+      if (!gameController.isShipPlacementValid(currentCoordinate)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   squares.forEach((square) =>
     square.addEventListener("mouseover", () => {
+      if (hoverShip == null) return;
       hoverShip.classList.add("active");
       let column = square.getAttribute("data-col");
       let row = square.getAttribute("data-row");
       let shipSize = hoverShip.getAttribute("data-size");
-      console.log(shipSize);
       let limit = 10 - hoverShip.getAttribute("data-size") + 1;
-      console.log(limit);
 
       if (shipOrientation == "horizontal" && column > limit) {
         hoverShip.classList.add("invalid");
       } else {
         hoverShip.classList.remove("invalid");
+      }
+
+      if (!hoverShip.classList.contains("invalid")) {
+        let result = getSquaresOccupied(
+          shipOrientation,
+          square.getAttribute("data-col"),
+          square.getAttribute("data-row"),
+          hoverShip.getAttribute("data-size")
+        );
+
+        if (!checkSquareAvailable(result)) {
+          hoverShip.classList.add("invalid");
+        }
       }
 
       hoverShip.style.gridColumn = `${column} / span ${shipSize}`;

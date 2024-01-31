@@ -7,20 +7,22 @@ const gameController = (() => {
   const playerTwo = "playerTwo";
   let currentTurn = 1;
 
+  const playerBoard = gameBoardFactory();
+  const computerBoard = gameBoardFactory();
+
   const switchTurn = () =>
     currentTurn == 1 ? (currentTurn = 2) : (currentTurn = 1);
-  const getEnemyBoard = () =>
-    currentTurn == 1 ? playerTwoBoard : playerOneBoard;
+  const getEnemyBoard = () => (currentTurn == 1 ? computerBoard : playerBoard);
   const getCurrentPlayer = () =>
     currentTurn == 1 ? `${playerOne}` : `${playerTwo}`;
 
-  const playerOneBoard = gameBoardFactory();
-  playerOneBoard.placeShip(["a2", "b2"]);
-  playerOneBoard.placeShip(["c5", "d5", "e5"]);
+  function isShipPlacementValid(coordinate) {
+    return playerBoard.isShipPlacementValid(coordinate);
+  }
 
-  const playerTwoBoard = gameBoardFactory();
-  playerTwoBoard.placeShip(["b3", "c3"]);
-  playerTwoBoard.placeShip(["b6", "b7", "b8"]);
+  function placeShip(coordinates) {
+    playerBoard.placeShip(coordinates);
+  }
 
   function playRound(square) {
     const enemyBoard = getEnemyBoard();
@@ -31,7 +33,12 @@ const gameController = (() => {
       : switchTurn();
   }
 
-  return { playRound, getCurrentPlayer };
+  return {
+    playRound,
+    getCurrentPlayer,
+    isShipPlacementValid,
+    placeShip,
+  };
 })();
 
 export default gameController;

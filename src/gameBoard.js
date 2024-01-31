@@ -14,6 +14,10 @@ const gameBoardFactory = () => {
     });
   }
 
+  function isShipPlacementValid(coordinate) {
+    return shipPlacement.has(coordinate) ? false : true;
+  }
+
   function receiveAttack(coordinate) {
     attackHistory.set(coordinate, true);
     if (shipPlacement.has(coordinate)) {
@@ -34,7 +38,13 @@ const gameBoardFactory = () => {
     } else return null;
   }
 
-  return { placeShip, receiveAttack, isEnemyWinner, isHit };
+  return {
+    placeShip,
+    receiveAttack,
+    isEnemyWinner,
+    isHit,
+    isShipPlacementValid,
+  };
 };
 
 export { gameBoardFactory };
