@@ -13,3 +13,7 @@
   width: 100vw;
   z-index: -1;
 }
+
+.grid-container {
+  cursor: pointer;
+}

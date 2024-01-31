@@ -14,7 +14,7 @@ const gameBoardFactory = () => {
     });
   }
 
-  function isShipPlacementValid(coordinate) {
+  function isSquareEmpty(coordinate) {
     return shipPlacement.has(coordinate) ? false : true;
   }
 
@@ -32,18 +32,17 @@ const gameBoardFactory = () => {
     return allShips.reduce((prev, cur) => prev && cur.isSunk(), true);
   }
 
-  function isHit(coordinate) {
-    if (attackHistory.has(coordinate)) {
-      return shipPlacement.has(coordinate) ? true : false;
-    } else return null;
+  function isAttacked(coordinate) {
+    return attackHistory.has(coordinate);
   }
 
   return {
+    attackHistory,
     placeShip,
     receiveAttack,
     isEnemyWinner,
-    isHit,
-    isShipPlacementValid,
+    isAttacked,
+    isSquareEmpty,
   };
 };
 

@@ -3,7 +3,8 @@ import gameController from "../gameController";
 function checkSquareAvailable(coordinates) {
   for (let index = 0; index < coordinates.length; index++) {
     let currentCoordinate = coordinates[index];
-    if (!gameController.isShipPlacementValid(currentCoordinate)) {
+    let playerBoard = gameController.getPlayerBoard();
+    if (!playerBoard.isSquareEmpty(currentCoordinate)) {
       return false;
     }
   }

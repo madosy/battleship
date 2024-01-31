@@ -3,9 +3,12 @@ import gameController from "../gameController";
 import "../style/attack.css";
 import getSquaresOccupied from "./getSquaresOccupied";
 import checkSquareAvailable from "./checkSquareAvailable";
+import convertToCoordinate from "../helper/convertToCoordinate";
 
 function loadPlayerScreen() {
   clearContentDiv();
+
+  const enemyBoard = gameController.getEnemyBoard();
 
   const content = document.querySelector("div.content");
   content.innerHTML = `
@@ -78,19 +81,22 @@ function loadPlayerScreen() {
     square.addEventListener("mouseover", () => {
       if (attackMarker == null) return;
       attackMarker.classList.remove("invalid");
+      gridContainer.style.removeProperty("cursor");
       attackMarker.classList.add("active");
       let column = square.getAttribute("data-col");
       let row = square.getAttribute("data-row");
 
       //this needs to check if squares have already been attacked
-      let squareToEval = getSquaresOccupied(
-        "horizontal",
-        square.getAttribute("data-col"),
+
+      let squareToEval = convertToCoordinate(
         square.getAttribute("data-row"),
-        1
+        square.getAttribute("data-col")
       );
-      if (!checkSquareAvailable(squareToEval))
+
+      if (enemyBoard.isAttacked(squareToEval)) {
         attackMarker.classList.add("invalid");
+        gridContainer.style.cursor = "not-allowed";
+      }
 
       attackMarker.style.gridColumn = `${column}`;
       attackMarker.style.gridRow = `${row}`;
@@ -108,17 +114,20 @@ function loadPlayerScreen() {
       attackMarker.classList.remove("active");
       let newMarker = attackMarker.cloneNode(false);
 
-      let squareToEval = getSquaresOccupied(
-        "horizontal",
-        square.getAttribute("data-col"),
+      let squareToEval = convertToCoordinate(
         square.getAttribute("data-row"),
-        1
+        square.getAttribute("data-col")
       );
 
-      let isHit = !checkSquareAvailable(squareToEval);
+      enemyBoard.receiveAttack(squareToEval);
+      let isHit = !enemyBoard.isSquareEmpty(squareToEval);
+
       if (isHit) {
         attackMarker.classList.add("hit");
       } else attackMarker.classList.add("nohit");
+
+      console.log(squareToEval);
+      console.log(enemyBoard.attackHistory);
 
       attackMarkerGrid.appendChild(newMarker);
       attackMarker = newMarker;

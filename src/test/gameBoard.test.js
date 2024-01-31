@@ -1,5 +1,11 @@
 import { gameBoardFactory } from "./gameBoard.js";
 
+// playerBoard.placeShip(["a1", "a2", "a3", "a4", "a5"]);
+// computerBoard.placeShip(["d3", "e3", "f3", "g3"]);
+// computerBoard.placeShip(["e6", "e7", "e8"]);
+// computerBoard.placeShip(["j5", "j6", "j7"]);
+// computerBoard.placeShip(["j8", "j9"]);
+
 let newBoard = gameBoardFactory();
 // Coordinate system
 // a0 b0 c0 ... j0
