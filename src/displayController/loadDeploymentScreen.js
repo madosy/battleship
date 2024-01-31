@@ -27,6 +27,19 @@ function loadDeploymentScreen() {
 </div>`;
   content.appendChild(gridContainer);
 
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-container");
+  const orientationButton = document.createElement("button");
+  orientationButton.classList.add("horizontal");
+  buttonContainer.appendChild(orientationButton);
+  content.appendChild(buttonContainer);
+  orientationButton.addEventListener("click", () => {
+    shipOrientation == "horizontal"
+      ? (shipOrientation = "vertical")
+      : (shipOrientation = "horizontal");
+    hoverShip.classList.toggle("vertical");
+  });
+
   const topGrid = document.createElement("div");
   topGrid.classList.add("top");
   topGrid.classList.add("grid");
@@ -136,8 +149,15 @@ function loadDeploymentScreen() {
         }
       }
 
-      hoverShip.style.gridColumn = `${column} / span ${shipSize}`;
-      hoverShip.style.gridRow = `${row}`;
+      if (shipOrientation == "horizontal") {
+        hoverShip.style.gridColumn = `${column} / span ${shipSize}`;
+        hoverShip.style.gridRow = `${row}`;
+      }
+
+      if (shipOrientation == "vertical") {
+        hoverShip.style.gridColumn = `${column}`;
+        hoverShip.style.gridRow = `${row} / span ${shipSize}`;
+      }
     })
   );
 }
