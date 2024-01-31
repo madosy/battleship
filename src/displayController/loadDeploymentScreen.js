@@ -93,6 +93,7 @@ function loadDeploymentScreen() {
       gameController.placeShip(result);
       hoverShip.classList.add("deployed");
       hoverShip = document.querySelector(".ship:not(.deployed)");
+      if (shipOrientation == "vertical") hoverShip.classList.add("vertical");
     })
   );
 
@@ -105,6 +106,14 @@ function loadDeploymentScreen() {
           `${alphabet[Number.parseInt(row) - 1]}${
             Number.parseInt(column) + index
           }`
+        );
+      }
+    } else {
+      for (let index = 0; index < shipSize; index++) {
+        squaresOccupied.push(
+          `${alphabet[Number.parseInt(row) + index - 1]}${Number.parseInt(
+            column
+          )}`
         );
       }
     }
@@ -131,6 +140,8 @@ function loadDeploymentScreen() {
       let limit = 10 - hoverShip.getAttribute("data-size") + 1;
 
       if (shipOrientation == "horizontal" && column > limit) {
+        hoverShip.classList.add("invalid");
+      } else if (shipOrientation == "vertical" && row > limit) {
         hoverShip.classList.add("invalid");
       } else {
         hoverShip.classList.remove("invalid");

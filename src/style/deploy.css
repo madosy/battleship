@@ -208,6 +208,9 @@ button {
   background-repeat: no-repeat;
   transform: rotate(0deg) scale(1); /*scale is just whatever squares it's supposed to occupy*/
 }
+.vertical.battleship.ship:not(.invalid)::before {
+  transform: rotate(90deg) scale(4.8);
+}
 
 .submarine.ship {
   min-height: 40px;
@@ -226,6 +229,10 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   transform: rotate(0deg) scale(1); /*scale is just whatever squares it's supposed to occupy*/
+}
+
+.vertical.submarine.ship:not(.invalid)::before {
+  transform: rotate(90deg) scale(2.8);
 }
 
 .grid-container:hover .ship.active.invalid {
