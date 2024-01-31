@@ -3,4 +3,5 @@ import displayController from "./displayController";
 import "./style/common.css";
 
 displayController.loadStartingScreen();
-displayController.loadDeploymentScreen();
+// displayController.loadDeploymentScreen();
+displayController.loadPlayerScreen();

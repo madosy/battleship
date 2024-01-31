@@ -1,5 +1,6 @@
 import clearContentDiv from "./clearContentDiv";
-import gameController from "../gameController";
+import getSquaresOccupied from "./getSquaresOccupied";
+import checkSquareAvailable from "./checkSquareAvailable";
 import "../style/deploy.css";
 
 function loadDeploymentScreen() {
@@ -100,39 +101,6 @@ function loadDeploymentScreen() {
       if (shipOrientation == "vertical") hoverShip.classList.add("vertical");
     })
   );
-
-  function getSquaresOccupied(shipOrientation, column, row, shipSize) {
-    let alphabet = "abcdefghij".split("");
-    let squaresOccupied = [];
-    if (shipOrientation == "horizontal") {
-      for (let index = 0; index < shipSize; index++) {
-        squaresOccupied.push(
-          `${alphabet[Number.parseInt(row) - 1]}${
-            Number.parseInt(column) + index
-          }`
-        );
-      }
-    } else {
-      for (let index = 0; index < shipSize; index++) {
-        squaresOccupied.push(
-          `${alphabet[Number.parseInt(row) + index - 1]}${Number.parseInt(
-            column
-          )}`
-        );
-      }
-    }
-    return squaresOccupied;
-  }
-
-  function checkSquareAvailable(coordinates) {
-    for (let index = 0; index < coordinates.length; index++) {
-      let currentCoordinate = coordinates[index];
-      if (!gameController.isShipPlacementValid(currentCoordinate)) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   squares.forEach((square) =>
     square.addEventListener("mouseover", () => {
