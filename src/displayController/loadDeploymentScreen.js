@@ -47,9 +47,13 @@ function loadDeploymentScreen() {
   const deploymentGrid = document.createElement("div");
   deploymentGrid.classList.add("deployment");
   deploymentGrid.classList.add("grid");
-  deploymentGrid.innerHTML = `<div class="patrol ship" data-size="2"></div>
-  <div class="battleship ship" data-size="5"></div>
-  <div class="submarine ship" data-size="3"></div>`;
+  deploymentGrid.innerHTML = `
+  <div class="carrier ship" data-size="5"></div>
+  <div class="battle ship" data-size="4"></div>
+  <div class="submarine ship" data-size="3"></div>
+  <div class="destroyer ship" data-size="3"></div>
+  <div class="patrol ship" data-size="2"></div>
+  `;
 
   const lowerGrid = document.createElement("div");
   lowerGrid.classList.add("lower");
