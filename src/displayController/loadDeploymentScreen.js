@@ -1,3 +1,4 @@
+import gameController from "../gameController";
 import clearContentDiv from "./clearContentDiv";
 import getSquaresOccupied from "./getSquaresOccupied";
 import checkSquareAvailable from "./checkSquareAvailable";
