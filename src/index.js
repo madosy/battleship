@@ -9,3 +9,5 @@ displayController.loadDeploymentScreen();
 
 let mySubscriber = (msg, data) => console.log({ msg, data });
 PubSub.subscribe(pubsubTopics.SQUARE_CLICKED, mySubscriber);
+PubSub.subscribe(pubsubTopics.SQUARE_MOUSEOVER, mySubscriber);
+PubSub.subscribe(pubsubTopics.CHANGE_ORIENTATION, mySubscriber);

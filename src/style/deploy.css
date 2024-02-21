@@ -7,8 +7,8 @@
 
 .grid-container {
   position: relative;
-  width: var(--container-width);
-  height: var(--container-width);
+  /* width: var(--container-width); */
+  /* height: var(--container-width); */
   /* border: 10px solid hsla(212, 50%, 25%, 1) ; */
   /* border-radius: 15px; */
   display: grid;
@@ -28,10 +28,14 @@ button {
   background-size: contain;
 }
 
+button.orientation {
+  grid-row-start: 3;
+}
+
 .content {
   display: grid;
-  grid-template-columns: min-content 1fr;
-  grid-template-rows: min-content 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr min-content;
   width: min-content;
   margin: auto;
 }
@@ -78,6 +82,8 @@ button {
   top: 0;
   left: 0;
   grid-area: grid;
+  background-image: url(../assets/dark-square.png);
+  background-size: var(--square-width);
 }
 .grid.top {
   /* position: absolute;

@@ -1,8 +1,6 @@
 import clearContentDiv from "./clearContentDiv";
 import gameController from "../gameController";
 import "../style/attack.css";
-import getSquaresOccupied from "./getSquaresOccupied";
-import checkSquareAvailable from "./checkSquareAvailable";
 import convertToCoordinate from "../helper/convertToCoordinate";
 
 function loadPlayerScreen() {

@@ -15,6 +15,9 @@ function generateClickableLayer() {
       clickableSquare.addEventListener("click", () =>
         PubSub.publish(pubsubTopics.SQUARE_CLICKED, { col, row })
       );
+      clickableSquare.addEventListener("mouseover", () =>
+        PubSub.publish(pubsubTopics.SQUARE_MOUSEOVER, { col, row })
+      );
       container.appendChild(clickableSquare);
     }
   }

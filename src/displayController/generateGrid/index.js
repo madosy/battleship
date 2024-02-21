@@ -14,6 +14,7 @@ function generateGrid() {
   gridContainer.appendChild(leftLabel);
   gridContainer.appendChild(shipLayer);
   gridContainer.appendChild(clickableLayer);
+  gridContainer.classList.add("grid-container");
 
   return gridContainer;
 }
