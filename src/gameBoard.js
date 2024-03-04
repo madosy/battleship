@@ -1,14 +1,14 @@
 import { shipFactory } from "./shipFactory.js";
 
 const gameBoardFactory = () => {
-  const allShips = [];
+  const allShips = new Map();
   const shipPlacement = new Map();
   const attackHistory = new Map();
 
-  function placeShip(coordinates) {
+  function placeShip(coordinates, name) {
     const length = coordinates.length;
-    const newShip = shipFactory(length);
-    allShips.push(newShip);
+    const newShip = shipFactory(length, name);
+    allShips.set(newShip, coordinates);
     coordinates.forEach((coord) => {
       shipPlacement.set(coord, newShip);
     });

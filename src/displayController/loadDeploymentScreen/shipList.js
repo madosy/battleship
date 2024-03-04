@@ -8,7 +8,7 @@ const shipList = (() => {
   }
 
   let carrier = buildShip("carrier", 5);
-  let battleship = buildShip("battle", 4);
+  let battleship = buildShip("battleship", 4);
   let submarine = buildShip("submarine", 3);
   let destroyer = buildShip("destroyer", 3);
   let patrol = buildShip("patrol", 2);
@@ -17,7 +17,7 @@ const shipList = (() => {
   function getNextShip() {
     if (data.length > 0) return data.shift();
   }
-  return { getNextShip };
+  return { getNextShip, buildShip };
 })();
 
 export default shipList;

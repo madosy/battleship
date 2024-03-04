@@ -2,6 +2,10 @@ import clearContentDiv from "./clearContentDiv";
 import gameController from "../gameController";
 import "../style/attack.css";
 import convertToCoordinate from "../helper/convertToCoordinate";
+import generateGrid from "./generateGrid";
+import pubsubTopics from "../pubsubTopics";
+import shipList from "./loadDeploymentScreen/shipList";
+import updateShipPosition from "./loadDeploymentScreen/updateShipPosition";
 
 function loadPlayerScreen() {
   clearContentDiv();
@@ -9,125 +13,97 @@ function loadPlayerScreen() {
   const enemyBoard = gameController.getEnemyBoard();
 
   const content = document.querySelector("div.content");
-  content.innerHTML = `
-  <div class="top label">
-  <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span
-  ><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-  </div>
-  <div class="left label">
-  <span>A</span>
-  <span>B</span>
-  <span>C</span>
-  <span>D</span>
-  <span>E</span>
-  <span>F</span>
-  <span>G</span>
-  <span>H</span>
-  <span>I</span>
-  <span>J</span>
-  </div>`;
+  const grid = generateGrid();
+  content.append(grid);
 
-  const gridContainer = document.createElement("div");
-  gridContainer.classList.add("grid-container");
-  content.appendChild(gridContainer);
-
-  const topGrid = document.createElement("div");
-  topGrid.classList.add("top");
-  topGrid.classList.add("grid");
-
-  const deploymentGrid = document.createElement("div");
-  deploymentGrid.classList.add("deployment");
-  deploymentGrid.classList.add("grid");
-  deploymentGrid.innerHTML = `
-  <div class="carrier ship" data-size="5"></div>
-  <div class="battle ship" data-size="4"></div>
-  <div class="submarine ship" data-size="3"></div>
-  <div class="destroyer ship" data-size="3"></div>
-  <div class="patrol ship" data-size="2"></div>
-  `;
-
-  const lowerGrid = document.createElement("div");
-  lowerGrid.classList.add("lower");
-  lowerGrid.classList.add("grid");
-
-  gridContainer.appendChild(lowerGrid);
-  gridContainer.appendChild(deploymentGrid);
   let attackMarkerGrid = document.createElement("div");
   attackMarkerGrid.classList.add("attack");
   attackMarkerGrid.classList.add("grid");
-  gridContainer.appendChild(attackMarkerGrid);
-  gridContainer.appendChild(topGrid);
+  let attackMarker = grabNewAttackMarker();
+  let activeMarker = attackMarker;
 
-  for (let row = 1; row < 11; row++) {
-    for (let col = 1; col < 11; col++) {
-      let square = document.createElement("div");
-      square.classList.add("square");
-      square.setAttribute("data-col", col);
-      square.setAttribute("data-row", row);
-      topGrid.appendChild(square);
-      lowerGrid.appendChild(square.cloneNode());
+  let clickableLayer = grid.querySelector("div:last-of-type");
+  grid.insertBefore(attackMarkerGrid, clickableLayer);
+
+  let token = PubSub.subscribe(pubsubTopics.SQUARE_MOUSEOVER, (msg, data) => {
+    activeMarker.classList.add("active");
+    activeMarker.style.gridColumn = `${data.col}`;
+    activeMarker.style.gridRow = `${data.row}`;
+  });
+
+  PubSub.subscribe(pubsubTopics.SQUARE_MOUSEOVER, (msg, data) => {
+    let squareToEvaluate = convertToCoordinate(data.row, data.col);
+    let isAlreadyAttacked = enemyBoard.attackHistory.has(squareToEvaluate);
+    isAlreadyAttacked
+      ? activeMarker.classList.add("invalid")
+      : activeMarker.classList.remove("invalid");
+  });
+
+  PubSub.subscribe(pubsubTopics.SQUARE_CLICKED, (msg, data) => {
+    if (!isActiveMarkerValid()) return;
+
+    let coordinate = convertToCoordinate(data.row, data.col);
+    enemyBoard.receiveAttack(coordinate);
+    let isHit = !enemyBoard.isSquareEmpty(coordinate);
+    placeMarker(isHit);
+    if (isHit) checkShipSunk(coordinate);
+    activeMarker = grabNewAttackMarker();
+  });
+
+  function isActiveMarkerValid() {
+    return (
+      activeMarker.classList.contains("active") &&
+      !activeMarker.classList.contains("invalid")
+    );
+  }
+
+  function placeMarker(isHit) {
+    activeMarker.classList.remove("active");
+    isHit
+      ? activeMarker.classList.add("hit")
+      : activeMarker.classList.add("nohit");
+  }
+
+  function checkShipSunk(coordinate) {
+    let attackedShip = enemyBoard.shipPlacement.get(coordinate);
+    let isSunk = attackedShip.isSunk();
+    if (isSunk) {
+      let coordinates = enemyBoard.allShips.get(attackedShip);
+      console.log(getOrientationData(coordinates));
+      let deploymentGrid = grid.querySelector(".deployment");
+      let name = attackedShip.getName();
+      let size = attackedShip.getLength();
+      let shipDOM = shipList.buildShip(name, size);
+      deploymentGrid.appendChild(shipDOM);
+      let positionInfo = getOrientationData(coordinates);
+      updateShipPosition(
+        shipDOM,
+        positionInfo.orientation,
+        positionInfo.row,
+        positionInfo.col
+      );
+      shipDOM.classList.add("deployed");
     }
   }
 
-  let attackMarker = document.createElement("div");
-  attackMarker.classList.add("marker");
-  attackMarkerGrid.appendChild(attackMarker);
+  function getOrientationData(coordinates) {
+    let alphabet = "abcdefghij".split("");
+    let orientation = "horizontal";
+    let length = coordinates.length;
+    let firstLetter = coordinates[0].charAt(0);
+    let secondLetter = coordinates[1].charAt(0);
+    if (firstLetter != secondLetter) orientation = "vertical";
+    let col = Number.parseInt(coordinates[0].substring(1));
+    let row = alphabet.findIndex((element) => element == firstLetter) + 1;
+    return { orientation, row, col, length };
+  }
 
-  let squares = document.querySelectorAll(".top .square");
-
-  squares.forEach((square) =>
-    square.addEventListener("mouseover", () => {
-      if (attackMarker == null) return;
-      attackMarker.classList.remove("invalid");
-      gridContainer.style.removeProperty("cursor");
-      attackMarker.classList.add("active");
-      let column = square.getAttribute("data-col");
-      let row = square.getAttribute("data-row");
-
-      //this needs to check if squares have already been attacked
-
-      let squareToEval = convertToCoordinate(
-        square.getAttribute("data-row"),
-        square.getAttribute("data-col")
-      );
-
-      if (enemyBoard.isAttacked(squareToEval)) {
-        attackMarker.classList.add("invalid");
-        gridContainer.style.cursor = "not-allowed";
-      }
-
-      attackMarker.style.gridColumn = `${column}`;
-      attackMarker.style.gridRow = `${row}`;
-    })
-  );
-
-  squares.forEach((square) =>
-    square.addEventListener("click", () => {
-      if (
-        attackMarker == null ||
-        attackMarker.classList.contains("invalid") ||
-        !attackMarker.classList.contains("active")
-      )
-        return;
-      attackMarker.classList.remove("active");
-      let newMarker = attackMarker.cloneNode(false);
-
-      let squareToEval = convertToCoordinate(
-        square.getAttribute("data-row"),
-        square.getAttribute("data-col")
-      );
-
-      enemyBoard.receiveAttack(squareToEval);
-      let isHit = !enemyBoard.isSquareEmpty(squareToEval);
-
-      if (isHit) {
-        attackMarker.classList.add("hit");
-      } else attackMarker.classList.add("nohit");
-
-      attackMarkerGrid.appendChild(newMarker);
-      attackMarker = newMarker;
-    })
-  );
+  function grabNewAttackMarker() {
+    let attackMarker = document.createElement("div");
+    attackMarker.classList.add("marker");
+    attackMarkerGrid.appendChild(attackMarker);
+    return attackMarker;
+  }
 }
 
 export default loadPlayerScreen;

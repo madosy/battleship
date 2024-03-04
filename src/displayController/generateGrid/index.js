@@ -1,3 +1,4 @@
+import generateAttackMarkerLayer from "./generateAttackLayer";
 import generateClickableLayer from "./generateClickableLayer";
 import generateLeftLabel from "./generateLeftLabel";
 import generateShipLayer from "./generateShipLayer";
@@ -8,11 +9,13 @@ function generateGrid() {
   let topLabel = generateTopLabel();
   let leftLabel = generateLeftLabel();
   let shipLayer = generateShipLayer();
+  // let attackMarkerLayer = generateAttackMarkerLayer();
   let clickableLayer = generateClickableLayer();
 
   gridContainer.appendChild(topLabel);
   gridContainer.appendChild(leftLabel);
   gridContainer.appendChild(shipLayer);
+  // gridContainer.appendChild(attackMarkerLayer);
   gridContainer.appendChild(clickableLayer);
   gridContainer.classList.add("grid-container");
 
